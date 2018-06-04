@@ -33,6 +33,9 @@ namespace Assets.SimpleLocalization
 
 			// This way you can insert values to localized strings.
 			FormattedText.text = LocalizationManager.Localize("Settings.PlayTime", TimeSpan.FromHours(10.5f).TotalHours);
+
+			// This way you can subscribe to localization changed event.
+			LocalizationManager.LocalizationChanged += () => FormattedText.text = LocalizationManager.Localize("Settings.PlayTime", TimeSpan.FromHours(10.5f).TotalHours);
 		}
 
 		/// <summary>
