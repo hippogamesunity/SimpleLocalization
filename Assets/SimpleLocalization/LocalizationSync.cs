@@ -5,6 +5,7 @@ namespace Assets.SimpleLocalization
 	/// <summary>
 	/// Downloads spritesheets from Google Spreadsheet and saves them to Resources. My laziness made me to create it.
 	/// </summary>
+	[ExecuteInEditMode]
 	public class LocalizationSync : MonoBehaviour
 	{
 		/// <summary>
@@ -29,16 +30,17 @@ namespace Assets.SimpleLocalization
 		#if UNITY_EDITOR
 
 		/// <summary>
-		/// Download spreadsheets.
+		/// Sync spreadsheets.
 		/// </summary>
-		public void Download()
+		public void Sync()
 		{
 			var folder = UnityEditor.AssetDatabase.GetAssetPath(SaveFolder);
+			var sheets = Sheets.Length;
 
-			for (int i = 0; i < Sheets.Length; i++)
+			Debug.Log("<color=yellow>Sync started, please wait for confirmation message. If it doesn't work, try to run it in Play mode.</color>");
+
+			foreach (var sheet in Sheets)
 			{
-				var index = i;
-				var sheet = Sheets[i];
 				var url = string.Format(UrlPattern, TableId, sheet.Id);
 
 				Downloader.Download(url, www =>
@@ -48,14 +50,14 @@ namespace Assets.SimpleLocalization
 						var path = System.IO.Path.Combine(folder, sheet.Name + ".csv");
 
 						System.IO.File.WriteAllBytes(path, www.bytes);
-
 						Debug.LogFormat("Sheet {0} saved to {1}", sheet.Id, path);
 					}
 
 					UnityEditor.AssetDatabase.Refresh();
 
-					if (index == Sheets.Length - 1)
+					if (--sheets == 0)
 					{
+						Debug.Log("<color=green>Localization successfully synced!</color>");
 						DestroyImmediate(Downloader.Instance.gameObject);
 					}
 				});

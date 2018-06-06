@@ -13,11 +13,11 @@ namespace Assets.SimpleLocalization.Editor
         {
             DrawDefaultInspector();
 
-            var localizationDownloader = (LocalizationSync) target;
+            var component = (LocalizationSync) target;
 
             if (GUILayout.Button("Sync"))
             {
-	            localizationDownloader.Download();
+	            component.Sync();
             }
 		}
     }
