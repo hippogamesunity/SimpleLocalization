@@ -48,11 +48,11 @@ namespace Assets.SimpleLocalization
             foreach (var textAsset in textAssets)
             {
                 var text = ReplaceMarkers(textAsset.text);
-                var matches = Regex.Matches(text, "\".+?\"");
+                var matches = Regex.Matches(text, "\"[\\s\\S]+?\"");
 
                 foreach (Match match in matches)
                 {
-                    text = text.Replace(match.Value, match.Value.Replace("\"", null).Replace(",", "[comma]"));
+					text = text.Replace(match.Value, match.Value.Replace("\"", null).Replace(",", "[comma]").Replace("\n", "[newline]"));
                 }
 
                 var lines = text.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
@@ -68,7 +68,7 @@ namespace Assets.SimpleLocalization
 
                 for (var i = 1; i < lines.Length; i++)
                 {
-                    var columns = lines[i].Split(',').Select(j => j.Replace("[comma]", ",")).ToList();
+                    var columns = lines[i].Split(',').Select(j => j.Replace("[comma]", ",").Replace("[newline]", "\n")).ToList();
                     var key = columns[0];
 
                     for (var j = 1; j < languages.Count; j++)

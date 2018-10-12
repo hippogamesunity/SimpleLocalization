@@ -31,7 +31,10 @@ namespace Assets.SimpleLocalization
 		        dropdown.options[i].text = LocalizationManager.Localize(LocalizationKeys[i]);
 	        }
 
-	        dropdown.captionText.text = LocalizationManager.Localize(LocalizationKeys[dropdown.value]);
+	        if (dropdown.value < LocalizationKeys.Length)
+	        {
+		        dropdown.captionText.text = LocalizationManager.Localize(LocalizationKeys[dropdown.value]);
+	        }
         }
     }
 }
